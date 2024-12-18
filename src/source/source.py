@@ -1,9 +1,19 @@
 import cv2
 import pandas as pd
 from datetime import datetime, timedelta
+import hashlib
+import os
 
 # Video file path
-VIDEO_FILE_PATH = "task.mp4"
+VIDEO_FILE_PATH = "example.mp4"
+OUTPUT_PATH = os.path.join(
+    '/home',
+    'gabriel',
+    'code',
+    'aim-training-data',
+    'data',
+    'generated'
+)
 
 # Parameters for the center crop
 CROP_WIDTH = 500  # Adjust based on your video resolution
@@ -16,21 +26,41 @@ def crop_center(frame, crop_width, crop_height):
     start_y = (h - crop_height) // 2
     return frame[start_y:start_y + crop_height, start_x:start_x + crop_width]
 
-def track_white_object(video_path, crop_width, crop_height):
+def track_white_object(video_path, crop_width, crop_height, output_path):
+
+    # Generate a unique folder for output files
+    short_hash = hashlib.sha256(os.urandom(16)).hexdigest()[:8]
+    output_folder = os.path.join(
+        output_path,
+        short_hash
+        )
+    os.makedirs(output_folder, exist_ok=True)
+
     # Load video and initialize output data
     cap = cv2.VideoCapture(video_path)
-    
-    # Get video FPS to calculate timestamps
-    fps = cap.get(cv2.CAP_PROP_FPS)
+
+    # Get video properties
+    frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
     print(f"Frames per second (FPS): {fps}")
+
+    # Adjust the dimensions for cropped frames
+    output_width = min(crop_width, frame_width)
+    output_height = min(crop_height, frame_height)
+
+    # Initialize video writer for saving processed video
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # Codec for MP4
+    output_video_path = os.path.join(output_folder, "cropped.mp4")
+    out = cv2.VideoWriter(output_video_path, fourcc, fps, (output_width, output_height))
 
     # Record the system datetime when processing starts
     start_time = datetime.now()
     print(f"Video processing start time: {start_time}")
 
     positions = []
-
     frame_count = 0
+
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -67,9 +97,12 @@ def track_white_object(video_path, crop_width, crop_height):
                 # Append frame number, datetime, center, and bounding box coordinates
                 positions.append((frame_count, current_datetime, cx, cy, x, y, w, h))
 
-                # Draw the center and bounding box for visualization (optional)
+                # Draw the center and bounding box for visualization
                 cv2.circle(cropped_frame, (cx, cy), 5, (0, 0, 255), -1)  # Center
                 cv2.rectangle(cropped_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)  # Bounding box
+
+        # Write the processed frame to the output video
+        out.write(cropped_frame)
 
         # Optional: Show the frame for debugging
         cv2.imshow("Tracking", cropped_frame)
@@ -80,14 +113,19 @@ def track_white_object(video_path, crop_width, crop_height):
 
     # Release resources
     cap.release()
+    out.release()
     cv2.destroyAllWindows()
-    
-    # Save positions to CSV
+
+    # Create a dataframe with position data 
     df = pd.DataFrame(positions, columns=[
         "Frame", "Datetime", "Center_X", "Center_Y", "Box_X", "Box_Y", "Box_Width", "Box_Height"
     ])
-    df.to_csv("tracked_positions.csv", index=False)
-    print("Tracking complete! Positions saved to 'tracked_positions.csv'.")
+
+    # Save positions to CSV in the output folder
+    output_csv_path = os.path.join(output_folder, "raw.csv")
+    df.to_csv(output_csv_path, index=False)
+    print(f"Tracking complete! Positions saved to '{output_csv_path}' and video saved to '{output_video_path}'.")
+
 
 if __name__ == "__main__":
-    track_white_object(VIDEO_FILE_PATH, CROP_WIDTH, CROP_HEIGHT)
+    track_white_object(VIDEO_FILE_PATH, CROP_WIDTH, CROP_HEIGHT, OUTPUT_PATH)
