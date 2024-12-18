@@ -1,0 +1,155 @@
+<mxfile host="65bd71144e">
+    <diagram id="uu2KYrHjnKk9b5EwfnAy" name="Page-1">
+        <mxGraphModel dx="1220" dy="418" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="6" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="2" target="3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value=".csv file with &lt;br&gt;centroid positon&lt;br&gt;and box coordinates&lt;br&gt;and cropped video" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="6" vertex="1" connectable="0">
+                    <mxGeometry x="-0.475" y="3" relative="1" as="geometry">
+                        <mxPoint x="-3" y="16" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="2" value="Source System" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
+                    <mxGeometry x="545" y="160" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="605" y="399" as="sourcePoint"/>
+                        <mxPoint x="605" y="479" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="12" value="Clean task video &lt;br&gt;and .csv with &lt;br&gt;positions" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="11" vertex="1" connectable="0">
+                    <mxGeometry x="-0.28" y="3" relative="1" as="geometry">
+                        <mxPoint x="-3" y="11" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="3" value="Ingestion" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" parent="1" vertex="1">
+                    <mxGeometry x="545" y="320" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="4" target="5" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="Transformed .csv&amp;nbsp; and&amp;nbsp;&lt;br&gt;video file showing &lt;br&gt;a label of hit/miss" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="14" vertex="1" connectable="0">
+                    <mxGeometry x="-0.28" y="4" relative="1" as="geometry">
+                        <mxPoint x="-4" y="11" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4" value="Transformation" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" parent="1" vertex="1">
+                    <mxGeometry x="545" y="480" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" parent="1" source="5" target="18" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="Last task &lt;br&gt;data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="22" vertex="1" connectable="0">
+                    <mxGeometry x="-0.1126" y="-1" relative="1" as="geometry">
+                        <mxPoint x="41" y="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=classic;endFill=1;" parent="1" source="5" target="30" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="Last task data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="31" vertex="1" connectable="0">
+                    <mxGeometry x="-0.2549" y="7" relative="1" as="geometry">
+                        <mxPoint x="-7" y="13" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="5" value="Serving" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" parent="1" vertex="1">
+                    <mxGeometry x="545" y="640" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="Records the video and extract the target position at each frame with timestamp" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="675" y="160" width="150" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Load the task .csv file and remove the start and end of taske periods from both the csv and the cropped video" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="675" y="320" width="150" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="Add target speed, target acceleration, target relative postion to center, and hit/miss column" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="675" y="480" width="150" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="Appends the .csv data to a single database (could be a .csv file) and paste the video to a folder with all others associating user and task IDs&amp;nbsp;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="675" y="640" width="150" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="18" target="20" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="KPIs Scores" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="26" vertex="1" connectable="0">
+                    <mxGeometry x="0.2714" y="1" relative="1" as="geometry">
+                        <mxPoint x="1" y="21" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="32" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=classic;endFill=1;" parent="1" source="18" target="30" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="275" y="860"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="33" value="KPIs for the &lt;br&gt;analysed task" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="32" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3806" y="-5" relative="1" as="geometry">
+                        <mxPoint x="5" y="-14" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="18" value="AI model" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" parent="1" vertex="1">
+                    <mxGeometry x="235" y="520" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="Take as input the last task data and output scores for each aim training KPI" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="365" y="520" width="150" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="20" target="2" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="295" y="220"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="29" value="Natural &lt;br&gt;Language &lt;br&gt;feedback" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="21" vertex="1" connectable="0">
+                    <mxGeometry x="-0.1212" y="-1" relative="1" as="geometry">
+                        <mxPoint x="64" y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="20" value="LLM" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" parent="1" vertex="1">
+                    <mxGeometry x="235" y="280" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="&lt;span style=&quot;text-align: center;&quot;&gt;Generates coaching text based on KPIs score&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="365" y="280" width="150" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endArrow=classic;endFill=1;" parent="1" source="30" target="35" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="605" y="930"/>
+                            <mxPoint x="85" y="930"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="37" value="Historical data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="36" vertex="1" connectable="0">
+                    <mxGeometry x="0.724" y="5" relative="1" as="geometry">
+                        <mxPoint x="5" y="19" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="30" value="User's historical &lt;br&gt;data" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;strokeWidth=4;" parent="1" vertex="1">
+                    <mxGeometry x="545" y="820" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;endArrow=classic;endFill=1;" parent="1" source="35" target="2" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="85" y="180"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="39" value="Reverse ETL &lt;br&gt;Dashboard" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="38" vertex="1" connectable="0">
+                    <mxGeometry x="0.0632" y="2" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="35" value="Historical data analytics" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" parent="1" vertex="1">
+                    <mxGeometry x="25" y="520" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="&lt;font style=&quot;font-size: 21px;&quot;&gt;&lt;font style=&quot;font-size: 21px;&quot; color=&quot;#60a917&quot;&gt;Source System&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size: 21px;&quot; color=&quot;#0050ef&quot;&gt;Data Pipeline&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size: 21px;&quot; color=&quot;#d80073&quot;&gt;Downstream App&lt;/font&gt;&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=default;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;strokeWidth=1;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="352.5" y="400" width="175" height="100" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
