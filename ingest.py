@@ -1,36 +1,43 @@
 import cv2
-
 from ultralytics import YOLO
 
-# Load the YOLO11 model
+# Load YOLO11 model
 model = YOLO("yolo11n.pt")
 
 # Open the video file
-video_path = "task.mp4"
+video_path = "cropped_task.mp4"
 cap = cv2.VideoCapture(video_path)
 
-# Loop through the video frames
+positions = []
+
+# Loop through video frames
 while cap.isOpened():
-    # Read a frame from the video
     success, frame = cap.read()
-
     if success:
-        # Run YOLO11 tracking on the frame, persisting tracks between frames
-        results = model.track(frame, persist=True)
+        # Preprocess for stability
+        frame = cv2.GaussianBlur(frame, (5, 5), 0)
+        
+        # Track with adjusted parameters
+        results = model.track(frame, conf=0.2, iou=0.1, persist=True)
 
-        # Visualize the results on the frame
+        # Handle object loss (optional re-detection fallback)
+        if len(results) == 0:
+            results = model.predict(frame, conf=0.3)
+
+        positions.append(results)
+
+        # Visualize annotated frame
         annotated_frame = results[0].plot()
 
-        # Display the annotated frame
+        # Display output
         cv2.imshow("YOLO11 Tracking", annotated_frame)
 
-        # Break the loop if 'q' is pressed
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
     else:
-        # Break the loop if the end of the video is reached
         break
 
-# Release the video capture object and close the display window
 cap.release()
 cv2.destroyAllWindows()
+
+print(positions)
