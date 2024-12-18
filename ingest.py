@@ -1,33 +1,36 @@
-## Code for read the video and track objects with AI computer vision model
-
-from ultralytics import YOLO
 import cv2
 
+from ultralytics import YOLO
 
-# load yolov8 model
-model = YOLO('yolov8n.pt')
+# Load the YOLO11 model
+model = YOLO("yolo11n.pt")
 
-# load video
-video_path = './task.mp4'
+# Open the video file
+video_path = "task.mp4"
 cap = cv2.VideoCapture(video_path)
 
-ret = True
-# read frames
-while ret:
-    ret, frame = cap.read()
+# Loop through the video frames
+while cap.isOpened():
+    # Read a frame from the video
+    success, frame = cap.read()
 
-    if ret:
-
-        # detect objects
-        # track objects
+    if success:
+        # Run YOLO11 tracking on the frame, persisting tracks between frames
         results = model.track(frame, persist=True)
 
-        # plot results
-        # cv2.rectangle
-        # cv2.putText
-        frame_ = results[0].plot()
+        # Visualize the results on the frame
+        annotated_frame = results[0].plot()
 
-        # visualize
-        cv2.imshow('frame', frame_)
-        if cv2.waitKey(25) & 0xFF == ord('q'):
+        # Display the annotated frame
+        cv2.imshow("YOLO11 Tracking", annotated_frame)
+
+        # Break the loop if 'q' is pressed
+        if cv2.waitKey(1) & 0xFF == ord("q"):
             break
+    else:
+        # Break the loop if the end of the video is reached
+        break
+
+# Release the video capture object and close the display window
+cap.release()
+cv2.destroyAllWindows()
