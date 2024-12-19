@@ -3,9 +3,12 @@ import pandas as pd
 from datetime import datetime, timedelta
 import hashlib
 import os
+import numpy as np
 
 # Video file path
 VIDEO_FILE_PATH = "example.mp4"
+USER_ID = '1'
+TRIAL_ID = hashlib.sha256(os.urandom(16)).hexdigest()[:8]
 OUTPUT_PATH = os.path.join(
     '/home',
     'gabriel',
@@ -28,11 +31,9 @@ def crop_center(frame, crop_width, crop_height):
 
 def track_white_object(video_path, crop_width, crop_height, output_path):
 
-    # Generate a unique folder for output files
-    short_hash = hashlib.sha256(os.urandom(16)).hexdigest()[:8]
     output_folder = os.path.join(
         output_path,
-        short_hash
+        TRIAL_ID
         )
     os.makedirs(output_folder, exist_ok=True)
 
@@ -51,7 +52,7 @@ def track_white_object(video_path, crop_width, crop_height, output_path):
 
     # Initialize video writer for saving processed video
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # Codec for MP4
-    output_video_path = os.path.join(output_folder, "cropped.mp4")
+    output_video_path = os.path.join(output_folder, "generated.mp4")
     out = cv2.VideoWriter(output_video_path, fourcc, fps, (output_width, output_height))
 
     # Record the system datetime when processing starts
@@ -81,6 +82,8 @@ def track_white_object(video_path, crop_width, crop_height, output_path):
         # Find contours to detect object
         contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
+        row = (USER_ID, TRIAL_ID, frame_count, fps, current_datetime, CROP_WIDTH, CROP_HEIGHT, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan)
+
         if contours:
             # Find the largest contour (assuming the white object is the largest)
             largest_contour = max(contours, key=cv2.contourArea)
@@ -94,12 +97,16 @@ def track_white_object(video_path, crop_width, crop_height, output_path):
                 # Get bounding box of the contour
                 x, y, w, h = cv2.boundingRect(largest_contour)
                 
-                # Append frame number, datetime, center, and bounding box coordinates
-                positions.append((frame_count, current_datetime, cx, cy, x, y, w, h))
-
+                # Update frame number, datetime, center, and bounding box coordinates when target is find
+                row = (USER_ID, TRIAL_ID, frame_count, fps, current_datetime, CROP_WIDTH, CROP_HEIGHT, cx, cy, x, y, w, h)
+                
                 # Draw the center and bounding box for visualization
                 cv2.circle(cropped_frame, (cx, cy), 5, (0, 0, 255), -1)  # Center
+                #cv2.circle(cropped_frame, (x, y), 5, (0, 0, 255), -1)
                 cv2.rectangle(cropped_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)  # Bounding box
+
+        # Append frame number, datetime, center, and bounding box coordinates
+        positions.append(row)
 
         # Write the processed frame to the output video
         out.write(cropped_frame)
@@ -118,11 +125,11 @@ def track_white_object(video_path, crop_width, crop_height, output_path):
 
     # Create a dataframe with position data 
     df = pd.DataFrame(positions, columns=[
-        "Frame", "Datetime", "Center_X", "Center_Y", "Box_X", "Box_Y", "Box_Width", "Box_Height"
+        "User_ID", "Trial_ID", "Frame", "FPS", "Datetime", "Video_Width", "Video_Height", "Center_X", "Center_Y", "Box_X", "Box_Y", "Box_Width", "Box_Height"
     ])
 
     # Save positions to CSV in the output folder
-    output_csv_path = os.path.join(output_folder, "raw.csv")
+    output_csv_path = os.path.join(output_folder, "generated.csv")
     df.to_csv(output_csv_path, index=False)
     print(f"Tracking complete! Positions saved to '{output_csv_path}' and video saved to '{output_video_path}'.")
 

@@ -33,7 +33,7 @@ raw_df = pd.read_csv(
     os.path.join(
             raw_path,
             trial,
-            'raw.csv'
+            'generated.csv'
         )
     )
 
@@ -55,13 +55,13 @@ print(f"Valid frames: {start_frame} to {end_frame}")
 cropped_video_path = os.path.join(
         raw_path,
         trial,
-        'cropped.mp4'
+        'generated.mp4'
     )
 
 trimmed_video_path = os.path.join(
         ingested_path,
         trial,
-        'trimmed.mp4'
+        'ingested.mp4'
     )
 
 # Load the original video
@@ -84,11 +84,11 @@ while cap.isOpened():
         break  # Exit at the end of the video
 
     # Write frames only if they are within the valid range
-    if start_frame <= current_frame <= end_frame:
+    if start_frame < current_frame < end_frame:
         out.write(frame)
 
     current_frame += 1
-    if current_frame > end_frame:
+    if current_frame >= end_frame:
         break
 
 # Release resources
@@ -96,7 +96,7 @@ cap.release()
 out.release()
 print(f"Trimmed video saved to: {trimmed_video_path}")
 
-raw_df.iloc[start_idx:end_idx].reset_index(drop=True).to_csv(os.path.join(ingested_path, trial, 'ingested.csv'))
+raw_df.iloc[start_idx+1:end_idx].reset_index(drop=True).to_csv(os.path.join(ingested_path, trial, 'ingested.csv'), index=False)
 
 outliers_df = raw_df.loc[outliers_idx]
 
