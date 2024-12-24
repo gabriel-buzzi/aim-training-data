@@ -2,15 +2,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import cv2
-from pipeline.src.dataframe import remove_outliers
+from dataframe import remove_outliers
 from video import trim_video, hit_miss_red
 
 def ingest(input_folder, output_folder):
 
     # Ingest data from the generated .csv 
-    
     df = pd.read_csv(os.path.join(input_folder, 'data.csv'))
     video = cv2.VideoCapture(os.path.join(input_folder, 'video.mp4'))
+
+    # Create folder for saving
+    os.makedirs(output_folder, exist_ok=True)
 
     # Remove the start and end of the video while the task was not started and until the record endded
     clean_df = remove_outliers(df)
@@ -43,6 +45,9 @@ def transform(input_folder, output_folder):
             'data.csv'
         )
     )
+
+    # Create folder for saving
+    os.makedirs(output_folder, exist_ok=True)
 
     # Add the columns in the docs
     FPS = df.iloc[0]['FPS']
@@ -81,6 +86,19 @@ def transform(input_folder, output_folder):
         output_path = os.path.join(output_folder, 'video.mp4')
     )
 
-def serve():
-    pass
-    
+def serve(input_folder, output_folder):
+    # Load data from transformation
+    df = pd.read_csv(
+        os.path.join(
+            input_folder,
+            'data.csv'
+        )
+    )
+
+    # Create folder for saving
+    os.makedirs(output_folder, exist_ok=True)
+
+    if 'data.csv' in os.listdir(output_folder):
+        df.to_csv(os.path.join(output_folder, 'data.csv'), mode='a', index=False, header=False)
+    else:
+        df.to_csv(os.path.join(output_folder, 'data.csv'), index = False)

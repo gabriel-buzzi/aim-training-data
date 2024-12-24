@@ -1,9 +1,7 @@
-from pipeline.src.utils import detect_outliers
+from utils import detect_outliers
 import pandas as pd
 
-def remove_outliers(data_path):
-
-    df = pd.read_csv(data_path)
+def remove_outliers(df):
 
     _, x_outliers_idx = detect_outliers(df, 'Center_X')
     _, y_outliers_idx = detect_outliers(df, 'Center_Y')

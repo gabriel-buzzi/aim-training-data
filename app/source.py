@@ -5,10 +5,12 @@ import hashlib
 import os
 import numpy as np
 
-# Video file path
-ID = 1
+# Video path
 VIDEO_FILE_PATH = "example.mp4"
-USER_ID = 1
+
+# Matadata
+TASK_ID = '1'
+USER_ID = '1'
 DATASET_PATH = os.path.join(
     '/home',
     'gabriel',
@@ -28,7 +30,7 @@ def crop_center(frame, crop_width, crop_height):
     start_y = (h - crop_height) // 2
     return frame[start_y:start_y + crop_height, start_x:start_x + crop_width]
 
-def track_white_object(video_path, crop_width, crop_height, output_path):
+def track_white_object(video_path, crop_width, crop_height, output_folder):
 
     # Load video and initialize output data
     cap = cv2.VideoCapture(video_path)
@@ -37,7 +39,6 @@ def track_white_object(video_path, crop_width, crop_height, output_path):
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = int(cap.get(cv2.CAP_PROP_FPS))
-    print(f"Frames per second (FPS): {fps}")
 
     # Adjust the dimensions for cropped frames
     output_width = min(crop_width, frame_width)
@@ -45,12 +46,10 @@ def track_white_object(video_path, crop_width, crop_height, output_path):
 
     # Initialize video writer for saving processed video
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # Codec for MP4
-    output_video_path = os.path.join(output_path, "video.mp4")
-    out = cv2.VideoWriter(output_video_path, fourcc, fps, (output_width, output_height))
+    out = cv2.VideoWriter(os.path.join(output_folder, "video.mp4"), fourcc, fps, (output_width, output_height))
 
     # Record the system datetime when processing starts
     start_time = datetime.now()
-    print(f"Video processing start time: {start_time}")
 
     positions = []
     frame_count = 0
@@ -75,7 +74,7 @@ def track_white_object(video_path, crop_width, crop_height, output_path):
         # Find contours to detect object
         contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
-        row = (ID, USER_ID, frame_count, fps, current_datetime, CROP_WIDTH, CROP_HEIGHT, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan)
+        row = (TASK_ID, USER_ID, frame_count, fps, current_datetime, CROP_WIDTH, CROP_HEIGHT, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan)
 
         if contours:
             # Find the largest contour (assuming the white object is the largest)
@@ -91,7 +90,7 @@ def track_white_object(video_path, crop_width, crop_height, output_path):
                 x, y, w, h = cv2.boundingRect(largest_contour)
                 
                 # Update frame number, datetime, center, and bounding box coordinates when target is find
-                row = (ID, USER_ID, frame_count, fps, current_datetime, CROP_WIDTH, CROP_HEIGHT, cx, cy, x, y, w, h)
+                row = (TASK_ID, USER_ID, frame_count, fps, current_datetime, CROP_WIDTH, CROP_HEIGHT, cx, cy, x, y, w, h)
                 
                 # Draw the center and bounding box for visualization
                 cv2.circle(cropped_frame, (cx, cy), 5, (0, 0, 255), -1)  # Center
@@ -118,34 +117,28 @@ def track_white_object(video_path, crop_width, crop_height, output_path):
 
     # Create a dataframe with position data 
     df = pd.DataFrame(positions, columns=[
-        "ID", "User_ID", "Frame", "FPS", "Datetime", "Video_Width", "Video_Height", "Center_X", "Center_Y", "Box_X", "Box_Y", "Box_Width", "Box_Height"
+        "Task_ID", "User_ID", "Frame", "FPS", "Datetime", "Video_Width", "Video_Height", "Center_X", "Center_Y", "Box_X", "Box_Y", "Box_Width", "Box_Height"
     ])
 
     # Save positions to CSV in the output folder
-    output_csv_path = os.path.join(output_path, "data.csv")
+    output_csv_path = os.path.join(output_folder, "data.csv")
     df.to_csv(output_csv_path, index=False)
     print(f"Tracking complete! Positions saved to '{output_csv_path}' and video saved to '{output_video_path}'.")
 
 
 if __name__ == "__main__":
-
-    os.makedirs(
-        os.path.join(
-                DATASET_PATH, 
-                ID
-            ), 
-            exist_ok=True
-        )
     
-    output_path = os.path.join(
+    output_folder = os.path.join(
         DATASET_PATH,
-        ID,
+        TASK_ID,
         'source'
     )
+
+    os.makedirs(output_folder, exist_ok=True)
 
     track_white_object(
         VIDEO_FILE_PATH, 
         CROP_WIDTH, 
         CROP_HEIGHT, 
-        output_path
+        output_folder
         )

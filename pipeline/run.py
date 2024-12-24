@@ -16,7 +16,7 @@ def main(ID):
     # Define the source address
     source_path = os.path.join(
         data_path,
-        'generated'
+        'source'
     )
 
     # Define the ingested data adress
@@ -41,8 +41,19 @@ def main(ID):
         output_folder = transformed_path
     )
 
+    # Define the served data adress
+    served_path = os.path.join(
+        data_path,
+        'served'
+    )
+
+    serve(
+        input_folder = transformed_path,
+        output_folder = served_path
+    )
+
 if __name__ == "__main__":
-    ID = 1
+    ID = '1'
 
     main(ID)
     
